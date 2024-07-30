@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins= "http://localhost:4200")
 @RequestMapping("api/users")
 public class UserController {
 
@@ -27,16 +28,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        User user = userService.findUserById(id);
-        if(user != null){
+    public ResponseEntity<Optional<User>> findById(@PathVariable Long id){
+        Optional<User> user = userService.findUserById(id);
+        if(user.isPresent()){
             return ResponseEntity.ok(user);
         } else{
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         try {
             User userCreated = userService.saveUser(user);
@@ -63,13 +64,11 @@ public class UserController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        try{
+        Optional<User> userOptional = userService.findUserById(id);
+        if(userOptional.isPresent()){
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
-        } catch (UserNotFoundException e){
-            return ResponseEntity.notFound().build();
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+        return ResponseEntity.notFound().build();
     }
 }

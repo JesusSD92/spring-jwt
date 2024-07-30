@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +24,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public User findUserById(Long idUser) {
-        return userRepository.findById(idUser)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    public Optional<User> findUserById(Long idUser) {
+        return userRepository.findById(idUser);
     }
 
     @Override
