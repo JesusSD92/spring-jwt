@@ -1,7 +1,6 @@
 package com.springboot.backend.jesus.users_backend.services;
 
 import com.springboot.backend.jesus.users_backend.entities.User;
-import com.springboot.backend.jesus.users_backend.exceptions.UserNotFoundException;
 import com.springboot.backend.jesus.users_backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
