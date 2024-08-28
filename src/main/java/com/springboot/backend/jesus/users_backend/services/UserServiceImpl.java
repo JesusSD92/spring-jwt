@@ -3,6 +3,8 @@ package com.springboot.backend.jesus.users_backend.services;
 import com.springboot.backend.jesus.users_backend.entities.User;
 import com.springboot.backend.jesus.users_backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,12 @@ public class UserServiceImpl implements UserService{
     @Transactional(readOnly = true)
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override

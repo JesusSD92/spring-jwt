@@ -5,6 +5,9 @@ import com.springboot.backend.jesus.users_backend.repositories.UserRepository;
 import com.springboot.backend.jesus.users_backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,7 +29,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins= "http://localhost:4200")
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -37,6 +40,13 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
         List<User> users = userService.findAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Page<User>> listPageable(@PathVariable Integer page) {
+        Pageable pageable = PageRequest.of(page, 4);
+        Page<User> users = userService.findAll(pageable);
         return ResponseEntity.ok(users);
     }
 
