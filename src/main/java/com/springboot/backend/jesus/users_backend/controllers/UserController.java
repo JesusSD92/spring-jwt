@@ -97,7 +97,6 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    //Método auxiliar para validar errores en los endpoints.
     private ResponseEntity<?> validateErrors(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
         result.getFieldErrors().forEach(error -> {

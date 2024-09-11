@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JpaUserDetailsService implements UserDetailsService {
 
-    private UserRepository repository;
+    private final UserRepository repository;
 
     @Transactional(readOnly = true)
     @Override
