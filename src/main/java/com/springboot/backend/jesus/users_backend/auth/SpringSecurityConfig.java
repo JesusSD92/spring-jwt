@@ -1,6 +1,7 @@
 package com.springboot.backend.jesus.users_backend.auth;
 
 import com.springboot.backend.jesus.users_backend.auth.filter.JwtAuthFilter;
+import com.springboot.backend.jesus.users_backend.auth.filter.JwtValidationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated())
                         .addFilter(new JwtAuthFilter(authenticationManager()))
+                        .addFilter(new JwtValidationFilter(authenticationManager()))
                         .csrf(AbstractHttpConfigurer::disable)
                         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .build();

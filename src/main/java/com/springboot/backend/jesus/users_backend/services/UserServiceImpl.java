@@ -5,6 +5,7 @@ import com.springboot.backend.jesus.users_backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,30 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public Optional<User> update(User user, Long id) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            User userDb = userOptional.get();
+            userDb.setEmail(user.getEmail());
+            userDb.setName(user.getName());
+            userDb.setLastName(user.getLastName());
+            userDb.setUsername(user.getUsername());
+
+            return Optional.of(userRepository.save(userDb));
+        }
+        return Optional.empty();
     }
 
     @Override

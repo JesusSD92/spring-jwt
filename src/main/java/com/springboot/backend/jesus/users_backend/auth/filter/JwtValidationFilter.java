@@ -1,6 +1,7 @@
 package com.springboot.backend.jesus.users_backend.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.backend.jesus.users_backend.auth.SimpleGrantedAuthorityJsonCreator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -47,9 +48,10 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             Object authoritiesClaims = claims.get("authorities");
 
             Collection<? extends GrantedAuthority> roles = Arrays.asList(new ObjectMapper()
-                    .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
+                    .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
+                            .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, roles);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, roles);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             chain.doFilter(request, response);
