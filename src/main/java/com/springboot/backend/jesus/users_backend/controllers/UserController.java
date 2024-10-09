@@ -1,5 +1,6 @@
 package com.springboot.backend.jesus.users_backend.controllers;
 
+import com.springboot.backend.jesus.users_backend.dtos.UserDto;
 import com.springboot.backend.jesus.users_backend.entities.User;
 import com.springboot.backend.jesus.users_backend.repositories.UserRepository;
 import com.springboot.backend.jesus.users_backend.services.UserService;
@@ -35,7 +36,6 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-
     //CRUD
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto user, BindingResult result, @PathVariable Long id) {
         if(result.hasErrors()){
             return validateErrors(result);
         }

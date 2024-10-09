@@ -1,5 +1,6 @@
 package com.springboot.backend.jesus.users_backend.services;
 
+import com.springboot.backend.jesus.users_backend.dtos.UserDto;
 import com.springboot.backend.jesus.users_backend.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ public interface UserService {
 
     User saveUser(User user);
 
-    Optional<User> update(User user, Long id);
+    Optional<User> update(UserDto user, Long id);
 
     Optional<User> findUserById(Long idUser);
 
